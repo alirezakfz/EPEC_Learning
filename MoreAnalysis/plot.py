@@ -28,7 +28,7 @@ fig_path = os.getcwd()
 file_path =  fig_path = os.getcwd()
 file_path =  os.path.join(fig_path, file_name)
 
-algorithms = ["Comp", "Diag", "FP", "SFP"]
+algorithms =  ["Comp", "Diag", "FP"] #["Comp", "Diag", "FP", "SFP"]
 DAs =['DA1', 'DA2', 'DA3', 'DA4']
 
 if os.path.exists(file_path):
@@ -78,7 +78,7 @@ def plot_smps_comp_vs_learning(file_path, algorithms, fig_path):
             ax.set_title('({0})-{1} vs {2}'.format(alphabet, 'Competitive', value_names[algo]), fontsize=18)
              
             # X and Y label font sizes
-            ax.set_xlabel('MTU (h)', fontsize=18)
+            ax.set_xlabel('Time Slot', fontsize=18)
             ax.set_ylabel('SMP(\u20AC/MWh)', fontsize=18)
             
             # Tick label font size
@@ -109,10 +109,10 @@ def plot_DAs_bids(file_path, algorithms,DAs ,fig_path):
     sheet_name = "BIDS_MVA"
     
     # Number of columns to plot 
-    ncols = len(DAs)
+    ncols = 2 #len(DAs)
     
     # Number of rows to plot
-    nrows = 1
+    nrows = 2  # 1
     
     # Select the first value as the pivot
     pivot = algorithms[0]
@@ -136,8 +136,17 @@ def plot_DAs_bids(file_path, algorithms,DAs ,fig_path):
             
             row =0
             count = 0
+            col = 0
             
             for da in DAs:
+                
+                if(nrows == 1 and ncols==1):
+                    ax = axes
+                elif(nrows == 1 and ncols==2):
+                    ax = axes[row]
+                else:
+                    ax = axes[row,col]
+                    
                 ax = axes[row]
                 df_temp = df[df['Algorithm'].isin([pivot, algo])]
                 df_temp = df_temp[['MTU', da, 'Algorithm']].copy()
@@ -148,7 +157,7 @@ def plot_DAs_bids(file_path, algorithms,DAs ,fig_path):
                 ax.set_title('({0})-{1} Bids'.format(alphabet, da), fontsize=18)
                  
                 # X and Y label font sizes
-                ax.set_xlabel('MTU (h)', fontsize=18)
+                ax.set_xlabel('Time Slot)', fontsize=18)
                 ax.set_ylabel('SMP(\u20AC/MWh)', fontsize=18)
                 
                 # Tick label font size
@@ -157,7 +166,14 @@ def plot_DAs_bids(file_path, algorithms,DAs ,fig_path):
                 # Legend font size
                 ax.legend(fontsize=16)
                 
-                row+=1
+                col += 1
+                
+                if(col == ncols):
+                    col = 0
+                    row += 1
+        
+                if(nrows == 1):
+                    row += 1 
                 
                 count += 1
                 alphabet = chr(ord('a') + count)
@@ -177,7 +193,7 @@ plot_DAs_bids(file_path, algorithms,DAs ,fig_path)
 
 
 def plot_algorithms_convergence(convergence_file_path, algorithms, DAs ,fig_path):
-    sheet_names = ["DIAG_PLOT", "FP_PLOT", "SFP_PLOT"]
+    sheet_names = ["DIAG_PLOT", "FP_PLOT"] #["DIAG_PLOT", "FP_PLOT", "SFP_PLOT"]
     
     # Number of columns to plot 
     ncols = len(sheet_names)
