@@ -132,7 +132,7 @@ def plot_DAs_bids(file_path, algorithms,DAs ,fig_path):
         for algo in algorithms[1:]:
             
             alphabet = 'a'
-            fig, axes = plt.subplots(nrows , ncols, figsize=(ncols*12, 8))
+            fig, axes = plt.subplots(nrows , ncols, figsize=(nrows*10, ncols*8))
             
             row =0
             count = 0
@@ -147,7 +147,7 @@ def plot_DAs_bids(file_path, algorithms,DAs ,fig_path):
                 else:
                     ax = axes[row,col]
                     
-                ax = axes[row]
+                # ax = axes[row]
                 df_temp = df[df['Algorithm'].isin([pivot, algo])]
                 df_temp = df_temp[['MTU', da, 'Algorithm']].copy()
                 
@@ -157,11 +157,11 @@ def plot_DAs_bids(file_path, algorithms,DAs ,fig_path):
                 ax.set_title('({0})-{1} Bids'.format(alphabet, da), fontsize=18)
                  
                 # X and Y label font sizes
-                ax.set_xlabel('Time Slot)', fontsize=18)
-                ax.set_ylabel('SMP(\u20AC/MWh)', fontsize=18)
+                ax.set_xlabel('Time Slot)', fontsize=14)
+                ax.set_ylabel('SMP(\u20AC/MWh)', fontsize=14)
                 
                 # Tick label font size
-                ax.tick_params(axis='both', which='major', labelsize=18)
+                ax.tick_params(axis='both', which='major', labelsize=14)
                 
                 # Legend font size
                 ax.legend(fontsize=16)
